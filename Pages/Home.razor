@@ -5,6 +5,11 @@
 <div class="calculator">
     <h1>Leasing Calculator</h1>
 
+    <div class="mode">
+        <button class="@(isLoan ? "" : "active")" @onclick="() => isLoan = false">Lease</button>
+        <button class="@(isLoan ? "active" : "")" @onclick="() => isLoan = true">Loan</button>
+    </div>
+
     <div class="field">
         <label for="price">Vehicle price (CHF)</label>
         <input id="price" type="number" @bind="price" />
@@ -13,10 +18,13 @@
         <label for="down">Down payment (CHF)</label>
         <input id="down" type="number" @bind="down" />
     </div>
-    <div class="field">
-        <label for="residual">Residual value (CHF)</label>
-        <input id="residual" type="number" @bind="residual" />
-    </div>
+    @if (!isLoan)
+    {
+        <div class="field">
+            <label for="residual">Residual value (CHF)</label>
+            <input id="residual" type="number" @bind="residual" />
+        </div>
+    }
     <div class="field">
         <label for="rate">Interest rate (%)</label>
         <input id="rate" type="number" step="0.1" @bind="rate" />
@@ -28,11 +36,16 @@
 
     <div class="result">
         <span>Monthly payment</span>
-        <strong>CHF @Calc.LeasePayment(price, down, residual, rate, months)</strong>
+        <strong>CHF @MonthlyPayment</strong>
     </div>
 </div>
 
 @code {
+    bool isLoan = false;
     decimal price = 40000, down = 5000, residual = 15000, rate = 3.9m;
     int months = 48;
+
+    decimal MonthlyPayment => isLoan
+        ? Calc.LoanPayment(price - down, rate, months)
+        : Calc.LeasePayment(price, down, residual, rate, months);
 }

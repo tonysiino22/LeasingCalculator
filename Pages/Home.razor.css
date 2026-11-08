@@ -50,3 +50,30 @@ input:focus {
     font-size: 1.25rem;
     color: #1f2933;
 }
+
+.mode {
+    display: flex;
+    margin-bottom: 1.75rem;
+    border: 1px solid #cbd2d9;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.mode button {
+    flex: 1;
+    padding: 0.6rem;
+    font-size: 1rem;
+    border: none;
+    background: #fff;
+    color: #52606d;
+    cursor: pointer;
+}
+
+.mode button + button {
+    border-left: 1px solid #cbd2d9;
+}
+
+.mode button.active {
+    background: #3e6fb0;
+    color: #fff;
+}
